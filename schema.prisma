@@ -8,10 +8,9 @@ generator client {
 }
 
 model Member {
-  id           String   @id @default(cuid())
+  id           String   @id
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  ddId         String   @unique
   cabinet      Boolean
   cabinetTitle String?
   slug         String
@@ -27,14 +26,39 @@ model Member {
 }
 
 model Party {
-  id        String   @id @default(cuid())
+  id        String   @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  ddId      String   @unique
   slug      String   @unique
   shorthand String   @unique
   name      String   @unique
   position  Int      @unique
   size      Int
   Members   Member[]
+}
+
+model Category {
+  id   String @id
+  name String
+  slug String
+}
+
+model Location {
+  id           String   @id
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  description  String
+  name         String
+  imageUrl     String
+  thumbnailUrl String
+  posterUrl    String
+}
+
+model Recess {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  description String   @unique
+  startDate   DateTime
+  endDate     DateTime
 }
