@@ -9,9 +9,10 @@ export async function locations() {
   const res = await axios.get("https://cdn.debatdirect.tweedekamer.nl/api/app");
 
   const data: App = res.data;
+  const locations: Prisma.LocationCreateManyInput[] = [];
 
   for (const l of data.locations) {
-    const data: Prisma.LocationCreateInput = {
+    const data: Prisma.LocationCreateManyInput = {
       id: l.id,
       description: l.description,
       name: l.name,
@@ -23,12 +24,9 @@ export async function locations() {
       )}`,
     };
 
-    await prisma.location.upsert({
-      create: data,
-      update: data,
-      where: { id: l.id },
-    });
+    locations.push(data);
 
     console.log(`created ${l.name}`);
   }
+  await prisma.location.createMany({ data: locations, skipDuplicates: true });
 }
